@@ -75,3 +75,4 @@ If you find this work useful, please cite [our paper](https://arxiv.org/abs/2402
 
 ### Changes to make before running:
 In file `src/multiwoz/inference.py` change line 21, 201, and 599 to your location. 
+Add your key in `sh_folders/inference_chatgpt.sh`
