@@ -9,6 +9,7 @@
 
 llm_configs = {
     "gpt-4-0409": {"model_name": "gpt-4-turbo-2024-04-09", "port": 8000},
+    "gpt-4-turbo": {"model_name": "gpt-4-turbo", "port": 8000},
     "gpt-3.5-0125": {"model_name": "gpt-3.5-turbo-0125", "port": 8001},
     "gpt-4-1106": {"model_name": "gpt-4-1106-preview", "port": 8002},
     "gpt-3.5-1106": {"model_name": "gpt-3.5-turbo-1106", "port": 8003},

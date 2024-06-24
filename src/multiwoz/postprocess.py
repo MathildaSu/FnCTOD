@@ -92,7 +92,7 @@ def normalize_domain_slot(schema):
     return normalized_schema
 
 
-def load_schema(dataset_version="2.1"):
+def load_schema(data_prefix, dataset_version="2.1"):
     if dataset_version == "2.0":
         processed_data_path = "multi-woz-2.0-final"
     elif dataset_version == "2.1":
@@ -104,14 +104,14 @@ def load_schema(dataset_version="2.1"):
     else:
         raise NotImplementedError
 
-    processed_data_path = f"./data/multiwoz/data/{processed_data_path}"
+    processed_data_path = os.path.join(data_prefix, processed_data_path)
     if not os.path.exists(processed_data_path):
         os.mkdir(processed_data_path)
 
-    data_path = f"{processed_data_path}/normalized_schema.yml"
+    data_path = os.path.join(processed_data_path, 'normalized_schema.yml')
 
     if not os.path.exists(data_path):
-        with open(f"./data/multiwoz/schema.json", "r") as file:
+        with open(os.path.join(data_prefix, "schema.json"), "r") as file:
             schema = json.load(file)
 
         normalized_schema = normalize_domain_slot(schema)
@@ -333,7 +333,7 @@ def sample_data_ids(data, n):
 
 
 def get_data_split(
-    dataset_version, reader, n_train=-1, n_val=-1, n_test=-1, return_list=False
+    data_prefix, dataset_version, reader, n_train=-1, n_val=-1, n_test=-1, return_list=False
 ):
     if dataset_version == "2.0":
         rawdata_path = "multi-woz-2.0-rawdata"
@@ -349,58 +349,58 @@ def get_data_split(
         processed_data_path = "multi-woz-2.3-final"
     else:
         raise NotImplementedError
-    rawdata_path = f"./data/multiwoz/data/{rawdata_path}"
-    processed_data_path = f"./data/multiwoz/data/{processed_data_path}"
+    rawdata_path = os.path.join(data_prefix, rawdata_path)
+    processed_data_path = os.path.join(data_prefix, processed_data_path)
 
     if not os.path.exists(processed_data_path):
         os.mkdir(processed_data_path)
 
     # training data
-    if not os.path.exists(f"{processed_data_path}/train_raw_dials.json"):
-        with open(f"{rawdata_path}/train_raw_dials.json", "r") as file:
+    if not os.path.exists(os.path.join(processed_data_path, "train_raw_dials.json")):
+        with open(os.path.join(rawdata_path, "train_raw_dials.json"), "r") as file:
             train_data = json.load(file)
             train_data = process_data(train_data, reader)
-        with open(f"{processed_data_path}/train_raw_dials.json", "w") as file:
+        with open(os.path.join(processed_data_path, "train_raw_dials.json"), "w") as file:
             json.dump(train_data, file, indent=4)
     else:
-        with open(f"{processed_data_path}/train_raw_dials.json", "r") as file:
+        with open(os.path.join(processed_data_path, "train_raw_dials.json"), "r") as file:
             train_data = json.load(file)
 
     # val data
-    if not os.path.exists(f"{processed_data_path}/dev_raw_dials.json"):
-        with open(f"{rawdata_path}/dev_raw_dials.json", "r") as file:
+    if not os.path.exists(os.path.join(processed_data_path, "dev_raw_dials.json")):
+        with open(os.path.join(rawdata_path, "dev_raw_dials.json"), "r") as file:
             val_data = json.load(file)
             val_data = process_data(val_data, reader)
-        with open(f"{processed_data_path}/dev_raw_dials.json", "w") as file:
+        with open(os.path.join(processed_data_path, "dev_raw_dials.json"), "w") as file:
             json.dump(val_data, file, indent=4)
     else:
-        with open(f"{processed_data_path}/dev_raw_dials.json", "r") as file:
+        with open(os.path.join(processed_data_path, "dev_raw_dials.json"), "r") as file:
             val_data = json.load(file)
 
     # test data
-    if not os.path.exists(f"{processed_data_path}/test_raw_dials.json"):
-        with open(f"{rawdata_path}/test_raw_dials.json", "r") as file:
+    if not os.path.exists(os.path.join(processed_data_path, "test_raw_dials.json")):
+        with open(os.path.join(rawdata_path, "test_raw_dials.json"), "r") as file:
             test_data = json.load(file)
             test_data = process_data(test_data, reader)
-        with open(f"{processed_data_path}/test_raw_dials.json", "w") as file:
+        with open(os.path.join(processed_data_path, "test_raw_dials.json"), "w") as file:
             json.dump(test_data, file, indent=4)
     else:
-        with open(f"{processed_data_path}/test_raw_dials.json", "r") as file:
+        with open(os.path.join(processed_data_path, "test_raw_dials.json"), "r") as file:
             test_data = json.load(file)
 
     # randomly sampled data
     if n_train != -1:
-        if not os.path.exists(f"{processed_data_path}/train_{n_train}_ids.json"):
+        if not os.path.exists(os.path.join(processed_data_path, f"train_{n_train}_ids.json")):
             train_data_ids = sample_data_ids(train_data, n_train)
             if n_train < len(
                 train_data
             ):  # only record the sampled ids is not the full set
                 with open(
-                    f"{processed_data_path}/train_{n_train}_ids.json", "w"
+                    os.path.join(processed_data_path, f"train_{n_train}_ids.json"), "w"
                 ) as file:
                     json.dump(train_data_ids, file)
         else:
-            with open(f"{processed_data_path}/train_{n_train}_ids.json", "r") as file:
+            with open(os.path.join(processed_data_path, f"train_{n_train}_ids.json"), "r") as file:
                 train_data_ids = json.load(file)
 
         sampled_train_data = {}
@@ -409,13 +409,13 @@ def get_data_split(
         train_data = sampled_train_data
 
     if n_val != -1:
-        if not os.path.exists(f"{processed_data_path}/dev_{n_val}_ids.json"):
+        if not os.path.exists(os.path.join(processed_data_path, f"dev_{n_val}_ids.json")):
             val_data_ids = sample_data_ids(val_data, n_val)
             if n_val < len(val_data):  # only record the sampled ids is not the full set
-                with open(f"{processed_data_path}/dev_{n_val}_ids.json", "w") as file:
+                with open(os.path.join(processed_data_path, f"dev_{n_val}_ids.json"), "w") as file:
                     json.dump(val_data_ids, file)
         else:
-            with open(f"{processed_data_path}/dev_{n_val}_ids.json", "r") as file:
+            with open(os.path.join(processed_data_path, f"dev_{n_val}_ids.json"), "r") as file:
                 val_data_ids = json.load(file)
 
         sampled_val_data = {}
@@ -424,15 +424,15 @@ def get_data_split(
         val_data = sampled_val_data
 
     if n_test != -1:
-        if not os.path.exists(f"{processed_data_path}/test_{n_test}_ids.json"):
+        if not os.path.exists(os.path.join(processed_data_path, f"test_{n_test}_ids.json")):
             test_data_ids = sample_data_ids(test_data, n_test)
             if n_test < len(
                 test_data
             ):  # only record the sampled ids is not the full set
-                with open(f"{processed_data_path}/test_{n_test}_ids.json", "w") as file:
+                with open(os.path.join(processed_data_path, f"test_{n_test}_ids.json"), "w") as file:
                     json.dump(test_data_ids, file)
         else:
-            with open(f"{processed_data_path}/test_{n_test}_ids.json", "r") as file:
+            with open(os.path.join(processed_data_path, f"test_{n_test}_ids.json"), "r") as file:
                 test_data_ids = json.load(file)
 
         sampled_test_data = {}
@@ -541,19 +541,19 @@ def retrieve_demo(dialogs, domains, n=5, max_turns=6, bs_da_ratios=[0.6, 0.4]):
     return selected_demos
 
 
-def load_examples(dataset_version, data):
+def load_examples(data_prefix, dataset_version, data):
     if dataset_version == "2.0":
-        processed_data_path = "multi-woz-2.0-final"
+        processed_data_path = "multi-woz-2.0-final/"
     elif dataset_version == "2.1":
-        processed_data_path = "multi-woz-2.1-final"
+        processed_data_path = "multi-woz-2.1-final/"
     elif dataset_version == "2.2":
-        processed_data_path = "multi-woz-2.2-final"
+        processed_data_path = "multi-woz-2.2-final/"
     elif dataset_version == "2.3":
-        processed_data_path = "multi-woz-2.3-final"
+        processed_data_path = "multi-woz-2.3-final/"
     else:
         raise NotImplementedError
 
-    example_data_path = f"./data/multiwoz/data/{processed_data_path}/examples.json"
+    example_data_path = os.path.join(os.path.join(data_prefix, processed_data_path), "examples.json")
 
     if not os.path.exists(example_data_path):
         combinations1 = all_domain
@@ -596,7 +596,7 @@ if __name__ == "__main__":
     args, unknown = parser.parse_known_args()
 
     # load configuration file and reader (for database query)
-    data_prefix = "./data/multiwoz/data/"
+    data_prefix = "/Users/tsu/Documents/code/FnCTOD/data/multiwoz/data/"
     if args.dataset_version == "2.0":
         cfg = Config20(data_prefix)
     elif args.dataset_version == "2.1":

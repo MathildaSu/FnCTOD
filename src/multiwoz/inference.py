@@ -17,6 +17,8 @@ import logging
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
+import sys
+sys.path.insert(0, '/Users/tsu/Documents/code/FnCTOD/')
 from src.multiwoz.utils import *
 from src.multiwoz.utils.config import *
 from src.multiwoz.utils.reader import *
@@ -182,7 +184,7 @@ if __name__ == "__main__":
     print(args)
 
     # fixed setups
-    if args.model in ["gpt-3.5", "gpt-4"]:
+    if args.model in ["gpt-3.5", "gpt-4", "gpt-4-turbo"]:
         assert args.dst_nshot == 0
         assert args.add_prev == False
         assert args.function_type == "json"
@@ -196,11 +198,15 @@ if __name__ == "__main__":
         assert args.ref_bs == False
 
     # load configuration file and reader (for database query)
-    data_prefix = "./data/multiwoz/data/"
+    data_prefix = "/Users/tsu/Documents/code/FnCTOD/data/multiwoz/data/"
     if args.dataset_version == "2.0":
         cfg = Config20(data_prefix)
     elif args.dataset_version == "2.1":
         cfg = Config21(data_prefix)
+        print('data_prefix')
+        print(data_prefix)
+        print('cfg')
+        print(cfg.dbs)
     elif args.dataset_version == "2.2":
         cfg = Config22(data_prefix)
     elif args.dataset_version == "2.3":
@@ -209,6 +215,7 @@ if __name__ == "__main__":
 
     # load schema, examples, data
     train_data, val_data, test_data = get_data_split(
+        data_prefix=data_prefix, 
         dataset_version=args.dataset_version,
         reader=reader,
         n_train=10000,
@@ -216,8 +223,8 @@ if __name__ == "__main__":
         n_test=args.n_eval,
         return_list=False,
     )
-    schema = load_schema(args.dataset_version)
-    examples = load_examples(args.dataset_version, train_data)
+    schema = load_schema(data_prefix, args.dataset_version)
+    examples = load_examples(data_prefix, args.dataset_version, train_data)
 
     if args.split == "val":
         eval_data = val_data

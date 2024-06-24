@@ -34,9 +34,9 @@ do
                                     do
                                         for function_type in json
                                         do
-                                            for model in gpt-3.5-0125
+                                            for model in gpt-4-turbo
                                             do
-                                                CUDA_VISIBLE_DEVICES=$devices python -m src.multiwoz.inference \
+                                                CUDA_VISIBLE_DEVICES=$devices python FnCTOD/src/multiwoz/inference.py \
                                                                                         --dataset_version $dataset_version \
                                                                                         --target_domains $target_domains \
                                                                                         --split $split \
