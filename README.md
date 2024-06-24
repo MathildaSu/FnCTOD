@@ -70,3 +70,8 @@ If you find this work useful, please cite [our paper](https://arxiv.org/abs/2402
   year={2024}
 }
 ```
+
+
+
+### Changes to make before running:
+In file `src/multiwoz/inference.py` change line 21, 201, and 599 to your location. 
