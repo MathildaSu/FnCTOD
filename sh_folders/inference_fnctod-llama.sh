@@ -5,11 +5,6 @@
 # LICENSE file in the root directory of this source tree.
 #
 
-export TRANSFORMERS_CACHE='HOME_PATH/.cache/huggingface/transformers'
-export HF_HOME='HOME_PATH/.cache/huggingface'
-
-devices=3
-
 cd ..
 
 # main DST results on multiwoz 2.1
@@ -17,7 +12,7 @@ for dataset_version in 2.1
 do
     for split in test
     do
-        for n_eval in 1000
+        for n_eval in 25
         do
             for multi_domain in False
             do
@@ -35,9 +30,9 @@ do
                                     do
                                         for function_type in json # text
                                         do
-                                            for model in fnctod-llama2-13b-200
+                                            for model in fnctod-llama2-13b
                                             do
-                                                CUDA_VISIBLE_DEVICES=$devices python -m src.multiwoz.inference \
+                                                python FnCTOD/src/multiwoz/inference.py \
                                                                                         --dataset_version $dataset_version \
                                                                                         --target_domains $target_domains \
                                                                                         --split $split \
