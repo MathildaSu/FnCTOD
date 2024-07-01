@@ -41,6 +41,7 @@ multidict==6.0.5
 multiprocess==0.70.14
 murmurhash==1.0.10
 networkx==3.3
+nltk==3.8.1
 numpy==1.24.3
 openai==0.27.7
 packaging==24.1
@@ -50,6 +51,7 @@ pathy==0.11.0
 peft @ git+https://github.com/huggingface/peft.git@412d7bc985f52225be8d9a7abc6a0cf2d71b2415
 preshed==3.0.9
 progressbar==2.5
+protobuf==5.27.2
 psutil==6.0.0
 pyarrow==16.1.0
 pydantic==1.10.17
