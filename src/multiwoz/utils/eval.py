@@ -96,7 +96,7 @@ class MultiWozEvaluator(object):
             Config = Config23
         else:
             raise NotImplementedError
-        self.cfg = Config(data_prefix="./data/multiwoz/data/")
+        self.cfg = Config(data_prefix="/Users/tsu/Documents/code/FnCTOD/data/multiwoz/data/")
         self.tokenizer = AutoTokenizer.from_pretrained(tokenizer_path)
         self.reader = MultiWozReader(self.tokenizer, self.cfg, data_mode="test")
 

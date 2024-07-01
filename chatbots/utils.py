@@ -74,10 +74,10 @@ def load_hf_model(
 
         model = LlamaForCausalLM.from_pretrained(
             model_name_or_path,
-            device_map="auto",
-            torch_dtype=dtype,
-            max_memory=get_max_memory(),
-            load_in_8bit=int8,
+            # device_map="auto",
+            # torch_dtype=dtype,
+            # max_memory=get_max_memory(),
+            # load_in_8bit=int8,
             # cache_dir=os.environ["TRANSFORMERS_CACHE"],
             trust_remote_code=True,
         )
@@ -117,10 +117,7 @@ def load_hf_model(
             print(error)
             model = AutoModel.from_pretrained(
                 model_name_or_path,
-                device_map="auto",
                 torch_dtype=dtype,
-                max_memory=get_max_memory(),
-                load_in_8bit=int8,
                 # cache_dir=os.environ["TRANSFORMERS_CACHE"],
                 trust_remote_code=True,
             )

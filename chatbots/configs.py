@@ -8,6 +8,10 @@
 #
 
 llm_configs = {
+    "fnctod-llama2-13b":{
+        "model_name": "Zekunli/FncTOD-Llama-13b",
+        "port": 8023,
+    },
     "gpt-4-0409": {"model_name": "gpt-4-turbo-2024-04-09", "port": 8000},
     "gpt-4-turbo": {"model_name": "gpt-4-turbo", "port": 8000},
     "gpt-3.5-0125": {"model_name": "gpt-3.5-turbo-0125", "port": 8001},
@@ -33,7 +37,7 @@ llm_configs = {
         "port": 8019,
     },
     "fnctod-llama2-13b-200": {
-        "model_name": "./ckpt/hf_ckpt/llama-2-13b-chat-sft-llama2-200",
+        "model_name": "Zekunli/FncTOD-Llama-13b",
         "port": 8020,
     },
     "fnctod-llama2-13b-300": {

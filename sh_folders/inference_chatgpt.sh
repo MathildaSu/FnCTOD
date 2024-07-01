@@ -16,7 +16,7 @@ for dataset_version in 2.1
 do
     for split in test
     do
-        for n_eval in 1000
+        for n_eval in 25
         do
             for multi_domain in False
             do
@@ -34,7 +34,7 @@ do
                                     do
                                         for function_type in json
                                         do
-                                            for model in gpt-4-turbo
+                                            for model in gpt-3.5-0125
                                             do
                                                 CUDA_VISIBLE_DEVICES=$devices python FnCTOD/src/multiwoz/inference.py \
                                                                                         --dataset_version $dataset_version \
